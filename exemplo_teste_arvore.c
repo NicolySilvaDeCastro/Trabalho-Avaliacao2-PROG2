@@ -46,20 +46,20 @@ No* buscar(No *raiz, int valor) {
 }
 
 /* ---------- Menor valor da subárvore ---------- */
-No* menorNo(No *raiz) {
+No* menor_no(No *raiz) {
     while (raiz && raiz->esq != NULL)
         raiz = raiz->esq;
     return raiz;
 }
 
 /* ---------- Remoção ---------- */
-No* remover(No *raiz, int valor) {
+No* remover_no(No *raiz, int valor) {
     if (raiz == NULL) return NULL;
 
     if (valor < raiz->valor) {
-        raiz->esq = remover(raiz->esq, valor);
+        raiz->esq = remover_no(raiz->esq, valor);
     } else if (valor > raiz->valor) {
-        raiz->dir = remover(raiz->dir, valor);
+        raiz->dir = remover_no(raiz->dir, valor);
     } else {
         /* Caso 1: sem filho ou 1 filho */
         if (raiz->esq == NULL) {
@@ -73,9 +73,9 @@ No* remover(No *raiz, int valor) {
             return temp;
         }
         /* Caso 2: dois filhos -> sucessor in-order (menor da direita) */
-        No *sucessor = menorNo(raiz->dir);
+        No *sucessor = menor_no(raiz->dir);
         raiz->valor = sucessor->valor;
-        raiz->dir = remover(raiz->dir, sucessor->valor);
+        raiz->dir = remover_no(raiz->dir, sucessor->valor);
     }
     return raiz;
 }
@@ -125,25 +125,25 @@ void liberar(No *raiz) {
 }
 
 /* ---------- Visualização simples (deitada) ---------- */
-void imprimirArvore(No *raiz, int nivel) {
+void imprimir_arvore(No *raiz, int nivel) {
     if (raiz == NULL) return;
-    imprimirArvore(raiz->dir, nivel + 1);
+    imprimir_arvore(raiz->dir, nivel + 1);
     for (int i = 0; i < nivel; i++) printf("    ");
     printf("%d\n", raiz->valor);
-    imprimirArvore(raiz->esq, nivel + 1);
+    imprimir_arvore(raiz->esq, nivel + 1);
 }
 
 /* ---------- main ---------- */
 int main(void) {
     No *raiz = NULL;
-    int valores[] = {50, 30, 70, 20, 40, 60, 80, 100, 101, 200, 300, 400, 500, 700, 800, 900, 1000, 1001, 1};
+    int valores[] = {50, 30, 70, 20, 40, 60, 80, 100, 101, 200, 300, 400, 500, 700, 1, 800, 900, 1000};
     int n = sizeof(valores) / sizeof(valores[0]);
 
     for (int i = 0; i < n; i++)
         raiz = inserir(raiz, valores[i]);
 
     printf("=== Árvore (visualização deitada) ===\n");
-    imprimirArvore(raiz, 0);
+    imprimir_arvore(raiz, 0);
 
     printf("\nEm ordem:  ");
     emOrdem(raiz);
@@ -162,7 +162,7 @@ int main(void) {
 
     /* Remoção */
     printf("\nRemovendo 30...\n");
-    raiz = remover(raiz, 30);
+    raiz = remover_no(raiz, 30);
     printf("Em ordem: ");
     emOrdem(raiz);
     printf("\n");
