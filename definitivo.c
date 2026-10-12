@@ -3,15 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/***************************************************************************************/
+/***Definição da struct No***/
 typedef struct No {
     int valor;
     int altura;
     struct No *esquerda;
     struct No *direita;
 } No;
-/***************************************************************************************/
-No* criar_no/*criarNo*/(int valor) {
+/***Códigos auxiliares para a função insrir_no***/
+No* criar_no(int valor) {
     No *novo = malloc(sizeof(No));
     if (novo == NULL) {
         return NULL;
@@ -25,59 +25,14 @@ No* criar_no/*criarNo*/(int valor) {
     return novo;
 }
 
-/*     No* inserir_no(No* raiz, int valor) {
-   if (raiz == NULL) {
-        return criar_no(valor);
-    }
-
-    if (valor < raiz->valor) {
-        raiz->esquerda = inserir_no(raiz->esquerda, valor);
-    }
-    else if (valor > raiz->valor) {
-        raiz->direita = inserir_no(raiz->direita, valor);
-    }
-    else {
-        return raiz;
-    }
-
-    atualizar_altura_no(raiz);
-
-
-    int fb = fator_balanceamento(raiz);
-
-
-    if (fb > 1 && valor < raiz->esquerda->valor) {
-        return rotacao_a_direita(raiz);
-    }
-
-
-    if (fb < -1 && valor > raiz->direita->valor) {
-        return rotacao_a_esquerda(raiz);
-    }
-
-
-    if (fb > 1 && valor > raiz->esquerda->valor) {
-        raiz->esquerda = rotacao_a_esquerda(raiz->esquerda);
-        return rotacao_a_direita(raiz);
-    }
-
-
-    if (fb < -1 && valor < raiz->direita->valor) {
-        raiz->direita = rotacao_a_direita(raiz->direita);
-        return rotacao_a_esquerda(raiz);
-    }
-
-    return raiz;
-}
-/***************************************************************************************/
-int altura_no/*altura*/(No * no) {
+int altura_no(No * no) {
     if (no == NULL) {
         return 0;
     }
     return no->altura;
 }
 
-int maior_valor_altura/*maximo*/(int a, int b) {
+int maior_valor_altura(int a, int b) {
     if (a > b) {
         return a;
     }
@@ -86,7 +41,7 @@ int maior_valor_altura/*maximo*/(int a, int b) {
 }
 
 
-void atualizar_altura_no/*atualizarAltura*/(No *no) {
+void atualizar_altura_no(No *no) {
     if (no != NULL) {
         no->altura = 1 + maior_valor_altura(        /*h(n)=1+max(h(ne),h(nd))*/
             altura_no(no->esquerda),
@@ -94,16 +49,16 @@ void atualizar_altura_no/*atualizarAltura*/(No *no) {
         );
     }
 }
-/***************************************************************************************/
-int fator_balanceamento/*fatorBalanceamento*//*indica a diferença entre a altura da subárvore esquerda e a da direita*/(No *no) {
+
+int fator_balanceamento/*indica a diferença entre a altura da subárvore esquerda e a da direita*/(No *no) {
     if (no == NULL) {
         return 0;
     }
 
     return altura_no(no->esquerda) - altura_no(no->direita); /*FB(n)=h(ne)−h(nd)*/
 }
-/***************************************************************************************/
-No* rotacao_a_direita/*rotacaoDireita*/(No *y) {
+
+No* rotacao_a_direita(No *y) {
     No *x = y->esquerda;
     No *T2 = x->direita;
 
@@ -117,7 +72,7 @@ No* rotacao_a_direita/*rotacaoDireita*/(No *y) {
 }
 
 
-No* rotacao_a_esquerda/*rotacaoEsquerda*/(No *x) {
+No* rotacao_a_esquerda(No *x) {
     No *y = x->direita;
     No *T2 = y->esquerda;
 
@@ -129,8 +84,8 @@ No* rotacao_a_esquerda/*rotacaoEsquerda*/(No *x) {
 
     return y;
 }
-/************usavel*********************************************************************/
-No* inserir_no/*inserir*/(No* raiz, int valor) {
+/***Usáveis(não auxiliares)***/
+No* inserir_no(No* raiz, int valor) {
     if (raiz == NULL) {
         return criar_no(valor);
     }
@@ -174,7 +129,7 @@ No* inserir_no/*inserir*/(No* raiz, int valor) {
 
     return raiz;
 }
-/*********usavel************************************************************************/
+/*função para printar a árvore(em forma de árvore)*/
 void imprimir_arvore(No *raiz, int nivel) {
     if (raiz == NULL) {
         return;
@@ -190,7 +145,7 @@ void imprimir_arvore(No *raiz, int nivel) {
 
     imprimir_arvore(raiz->esquerda, nivel + 1);
 }
-
+/*printa a árvore(em forma de ordem)*/
 void impressao_em_ordem(No *raiz) {
     if (raiz == NULL) {
         return;
@@ -203,7 +158,7 @@ void impressao_em_ordem(No *raiz) {
 
 
 
-
+/*printa especificações(detalhes) de cada nó da arvore */
 void imprimir_detalhes(No *raiz) {
     if (raiz == NULL) {
         return;
@@ -217,7 +172,9 @@ void imprimir_detalhes(No *raiz) {
     imprimir_detalhes(raiz->esquerda);
     imprimir_detalhes(raiz->direita);
 }
-/***************************************************************************************/
+/*auxiliar de remover_no |    */
+/*                       |    */
+/*                       v    */
 No* menor_no(No *raiz) {
     No *atual = raiz;
 
@@ -227,7 +184,7 @@ No* menor_no(No *raiz) {
 
     return atual;
 }
-/*usavel*/
+/*função que remove um nó da árvore*/
 
 No* remover_no(No *raiz, int valor) {
     if (raiz == NULL) {
@@ -292,9 +249,12 @@ No* remover_no(No *raiz, int valor) {
 
     return raiz;
 }
-/***************************************************************************************/
+/**************************************************************************************MAIN*/
 int main() {
 No *raiz = NULL;
+
+   /*Para inserir um nó*/
+    /* raiz = inserir_no(raiz, valor);*/
 
     raiz = inserir_no(raiz, 30);
     raiz = inserir_no(raiz, 20);
@@ -303,8 +263,19 @@ No *raiz = NULL;
     raiz = inserir_no(raiz, 12);
     raiz = inserir_no(raiz, 14);
 
+    /*Para remover um nó*/
+    /*remover_no(raiz, valor);*/
 
 
+
+    /*Para printar a árvore em ordem*/
+    /*impressao_em_ordem(raiz);*/
+
+    /*Para printar os detalhes e ... */
+    imprimir_detalhes(raiz);
+
+    /*Para printar a árvore*/
     imprimir_arvore(raiz, 0);
+
     return 0;
 }
